@@ -26,7 +26,7 @@ Given there does not exist an article with the id 42
 	and "Joe" is a reader
 	and "SYMBOL" is any url encoded string not containing a "/" or "?"
 When "Joe" follows any link of the form http://www.suite101.com/content/SYMBOL-a42
-Then "Joe" is presented with a 404 page.
+Then "Joe" is presented with a 404 error.
 
 For writers - provide an article CRUD at http://www.suite101.com/admin/articles
 
@@ -37,4 +37,12 @@ Given there exists an article "Tea History" with the id 317619
 	and "Hildy" is the article's author
 When "Hildy" follows the link http://www.suite101.com/admin/articles/317619/edit
 Then "Hildy" can edit the article "Tea History"
+
+Scenario: Non-author tries to access article for edit
+Given there exists an article "Tea History" with the id 317619
+	and "Hildy" is the article's author
+When "Walter" follows the link http://www.suite101.com/admin/articles/317619/edit
+Then "Walter" is presented with a 403 error.
+
+
 
