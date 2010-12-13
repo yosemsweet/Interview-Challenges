@@ -1,0 +1,40 @@
+Challenge 1:
+Suite101 articles can be accessed as a reader and edited as a writer.
+
+For readers - provide an article view for articles with the following URL format:
+http://www.suite101.com/content/[article-title]-a[ID]
+
+Feature: Show readers articles.
+
+Scenario: article accessed at canonical url.
+Given there exists an article "Tea History" with the id 317619
+	and the article's title is "Tea History"
+	and "Joe" is a reader
+When "Joe" follows the link http://www.suite101.com/content/tea-history-a317619
+Then "Joe" sees the contents of the article "Tea History"
+
+Scenario: article accessed at wrong url
+Given there exists an article "Tea History" with the id 317619
+	and the article's title is "Tea History"
+	and "Joe" is a reader
+	and "SYMBOL" is not "tea-history"
+When "Joe" follows any link of the form http://www.suite101.com/content/SYMBOL-a317619
+Then "Joe" is redirected to http://www.suite101.com/content/tea-history-a317619
+
+Scenario: article doesn't exist
+Given there does not exist an article with the id 42
+	and "Joe" is a reader
+	and "SYMBOL" is any url encoded string not containing a "/" or "?"
+When "Joe" follows any link of the form http://www.suite101.com/content/SYMBOL-a42
+Then "Joe" is presented with a 404 page.
+
+For writers - provide an article CRUD at http://www.suite101.com/admin/articles
+
+Feature: Edit an article
+
+Scenario: View article edit screen
+Given there exists an article "Tea History" with the id 317619
+	and "Hildy" is the article's author
+When "Hildy" follows the link http://www.suite101.com/admin/articles/317619/edit
+Then "Hildy" can edit the article "Tea History"
+
